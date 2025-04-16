@@ -15,7 +15,9 @@
     "@react-native-community/cli": "^18.0.0",
     "@react-navigation/bottom-tabs": "^7.0.0",
     "@react-navigation/native": "^7.0.0",
-    "expo": "^52.0.44",
+    "@tanstack/react-query": "^5.74.3",
+    "axios": "^1.8.4",
+    "expo": "52.0.46",
     "expo-blur": "~14.0.3",
     "expo-camera": "~16.0.18",
     "expo-constants": "~17.0.8",
@@ -24,6 +26,7 @@
     "expo-linear-gradient": "~14.0.2",
     "expo-linking": "~7.0.5",
     "expo-router": "~4.0.20",
+    "expo-secure-store": "~14.0.1",
     "expo-splash-screen": "~0.29.22",
     "expo-status-bar": "~2.0.1",
     "expo-symbols": "^0.2.2",
@@ -44,7 +47,8 @@
     "react-native-web": "~0.19.6",
     "react-native-webview": "13.12.5",
     "tailwindcss-react-native": "^1.7.10",
-    "zod": "^3.22.4"
+    "wrap-ansi": "7",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
