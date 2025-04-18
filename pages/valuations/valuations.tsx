@@ -1,6 +1,8 @@
 import apiClient from '@/helpers/api-client';
 import { accordionColorTrigger } from '@/hooks';
+import { useSearchStore } from '@/store/search';
 import { useQuery } from '@tanstack/react-query';
+import { useLocalSearchParams } from 'expo-router';
 import {
   Building2,
   Calendar,
@@ -20,181 +22,23 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useValuations } from './api';
 
 const { width } = Dimensions.get('window');
 
-const cardData = [
-  {
-    applicant_name: 'John Doe',
-    institution_name: 'Tech University',
-    reference_number: 'REF123456',
-    applicant_phone_number: '9876543210',
-    address: '123, Main Street, City',
-    contact_name: 'Jane Smith',
-    contact_phone_number: '1234567890',
-    contact_alternate_phone_number: '0987654321',
-    status_code: 'VALUATION_NEW',
-    status_desc: 'status desc',
-    branch_contact_person_name: 'Michael Scott',
-    branch_contact_person_phone_number: '4567891230',
-    branch_contact_person_alternate_phone_number: '3216549870',
-    formatted_initiation_date: '2025-04-01',
-    expected_completion_date: '2025-04-30',
-  },
-  {
-    applicant_name: 'John Doe',
-    institution_name: 'Tech University',
-    reference_number: 'REF123456',
-    applicant_phone_number: '9876543210',
-    address: '123, Main Street, City',
-    contact_name: 'Jane Smith',
-    contact_phone_number: '1234567890',
-    contact_alternate_phone_number: '0987654321',
-    status_code: 'VALUATION_DRAFT',
-    status_desc: 'status desc',
-    branch_contact_person_name: 'Michael Scott',
-    branch_contact_person_phone_number: '4567891230',
-    branch_contact_person_alternate_phone_number: '3216549870',
-    formatted_initiation_date: '2025-04-01',
-    expected_completion_date: '2025-04-30',
-  },
-  {
-    applicant_name: 'John Doe',
-    institution_name: 'Tech University',
-    reference_number: 'REF123456',
-    applicant_phone_number: '9876543210',
-    address: '123, Main Street, City',
-    contact_name: 'Jane Smith',
-    contact_phone_number: '1234567890',
-    contact_alternate_phone_number: '0987654321',
-    status_code: 'READY_FOR_VISIT',
-    status_desc: 'status desc',
-    branch_contact_person_name: 'Michael Scott',
-    branch_contact_person_phone_number: '4567891230',
-    branch_contact_person_alternate_phone_number: '3216549870',
-    formatted_initiation_date: '2025-04-01',
-    expected_completion_date: '2025-04-30',
-  },
-  {
-    applicant_name: 'John Doe',
-    institution_name: 'Tech University',
-    reference_number: 'REF123456',
-    applicant_phone_number: '9876543210',
-    address: '123, Main Street, City',
-    contact_name: 'Jane Smith',
-    contact_phone_number: '1234567890',
-    contact_alternate_phone_number: '0987654321',
-    status_code: 'VISIT_DELAYED',
-    status_desc: 'status desc',
-    branch_contact_person_name: 'Michael Scott',
-    branch_contact_person_phone_number: '4567891230',
-    branch_contact_person_alternate_phone_number: '3216549870',
-    formatted_initiation_date: '2025-04-01',
-    expected_completion_date: '2025-04-30',
-  },
-  {
-    applicant_name: 'John Doe',
-    institution_name: 'Tech University',
-    reference_number: 'REF123456',
-    applicant_phone_number: '9876543210',
-    address: '123, Main Street, City',
-    contact_name: 'Jane Smith',
-    contact_phone_number: '1234567890',
-    contact_alternate_phone_number: '0987654321',
-    status_code: 'VISIT_COMPLETED',
-    status_desc: 'status desc',
-    branch_contact_person_name: 'Michael Scott',
-    branch_contact_person_phone_number: '4567891230',
-    branch_contact_person_alternate_phone_number: '3216549870',
-    formatted_initiation_date: '2025-04-01',
-    expected_completion_date: '2025-04-30',
-  },
-  {
-    applicant_name: 'John Doe',
-    institution_name: 'Tech University',
-    reference_number: 'REF123456',
-    applicant_phone_number: '9876543210',
-    address: '123, Main Street, City',
-    contact_name: 'Jane Smith',
-    contact_phone_number: '1234567890',
-    contact_alternate_phone_number: '0987654321',
-    status_code: 'REPORT_DELAYED',
-    status_desc: 'status desc',
-    branch_contact_person_name: 'Michael Scott',
-    branch_contact_person_phone_number: '4567891230',
-    branch_contact_person_alternate_phone_number: '3216549870',
-    formatted_initiation_date: '2025-04-01',
-    expected_completion_date: '2025-04-30',
-  },
-  {
-    applicant_name: 'John Doe',
-    institution_name: 'Tech University',
-    reference_number: 'REF123456',
-    applicant_phone_number: '9876543210',
-    address: '123, Main Street, City',
-    contact_name: 'Jane Smith',
-    contact_phone_number: '1234567890',
-    contact_alternate_phone_number: '0987654321',
-    status_code: 'VALUATION_COMPLETED',
-    status_desc: 'status desc',
-    branch_contact_person_name: 'Michael Scott',
-    branch_contact_person_phone_number: '4567891230',
-    branch_contact_person_alternate_phone_number: '3216549870',
-    formatted_initiation_date: '2025-04-01',
-    expected_completion_date: '2025-04-30',
-  },
-  {
-    applicant_name: 'John Doe',
-    institution_name: 'Tech University',
-    reference_number: 'REF123456',
-    applicant_phone_number: '9876543210',
-    address: '123, Main Street, City',
-    contact_name: 'Jane Smith',
-    contact_phone_number: '1234567890',
-    contact_alternate_phone_number: '0987654321',
-    status_code: 'VALUATION_DELETED',
-    status_desc: 'status desc',
-    branch_contact_person_name: 'Michael Scott',
-    branch_contact_person_phone_number: '4567891230',
-    branch_contact_person_alternate_phone_number: '3216549870',
-    formatted_initiation_date: '2025-04-01',
-    expected_completion_date: '2025-04-30',
-  },
-  {
-    applicant_name: 'John Doe',
-    institution_name: 'Tech University',
-    reference_number: 'REF123456',
-    applicant_phone_number: '9876543210',
-    address: '123, Main Street, City',
-    contact_name: 'Jane Smith',
-    contact_phone_number: '1234567890',
-    contact_alternate_phone_number: '0987654321',
-    status_code: 'VALUATION_CANCELLED',
-    status_desc: 'status desc',
-    branch_contact_person_name: 'Michael Scott',
-    branch_contact_person_phone_number: '4567891230',
-    branch_contact_person_alternate_phone_number: '3216549870',
-    formatted_initiation_date: '2025-04-01',
-    expected_completion_date: '2025-04-30',
-  },
-];
+const Valuations = ({ isAllValuations }: { isAllValuations?: boolean }) => {
+  const query = useSearchStore((state) => state.query);
+  const { data, isLoading, error } = useValuations(!!isAllValuations);
 
-async function getValuations() {
-  const response = await apiClient.get('valuations');
-
-  return response.data;
-}
-
-const ResponsiveCards = () => {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['valuations'],
-    queryFn: getValuations,
+  const filteredData = (data as any[])?.filter((item: any) => {
+    //["applicant_name", "address", "title", "reference_number", "institution_name", "status_desc", "visitor_name"]
+    return item.applicant_name.toLowerCase().includes(query.toLowerCase());
   });
-  console.log(data);
 
+  console.log(filteredData);
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {data?.map((item, index) => {
+      {filteredData?.map((item: any, index: number) => {
         const { backgroundColor, color } = accordionColorTrigger(
           item.status_code
         );
@@ -461,4 +305,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ResponsiveCards;
+export default Valuations;
