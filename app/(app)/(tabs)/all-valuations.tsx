@@ -1,11 +1,8 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import Valuations from '@/pages/valuations/valuations'
+import { View, Text } from 'react-native';
+import Valuations from '@/pages/valuations/valuations';
 
 const index = () => {
-  return (
-    <Valuations isAllValuations />
-  )
-}
+  return <Valuations isAllValuations />;
+};
 
-export default index
+export default index;

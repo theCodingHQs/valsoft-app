@@ -2,7 +2,7 @@ import storage from '@/helpers/auth';
 import { useSearchStore } from '@/store/search';
 import { router, Tabs } from 'expo-router';
 import { List, LogOut, MoreVerticalIcon, User } from 'lucide-react-native';
-import { TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 export default function TabLayout() {
   const setQuery = useSearchStore((state) => state.setQuery);

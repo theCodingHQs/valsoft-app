@@ -12,17 +12,17 @@ import {
   PhoneCall,
   User,
 } from 'lucide-react-native';
-import React from 'react';
 import {
+  ActivityIndicator,
   Dimensions,
   ScrollView,
   StyleSheet,
   Text,
   TextStyle,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import { useValuations } from './api';
+import { ValuationActions } from './valuation-actions';
 
 const { width } = Dimensions.get('window');
 
@@ -35,7 +35,11 @@ const Valuations = ({ isAllValuations }: { isAllValuations?: boolean }) => {
     return item.applicant_name.toLowerCase().includes(query.toLowerCase());
   });
 
-  console.log(filteredData);
+  if(isLoading){
+    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <ActivityIndicator size="large" />
+          </View>
+  }
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {filteredData?.map((item: any, index: number) => {
@@ -140,7 +144,7 @@ const Valuations = ({ isAllValuations }: { isAllValuations?: boolean }) => {
             </View>
 
             <View style={{ ...styles.cardFooter, backgroundColor }}>
-              <TouchableOpacity style={styles.actionButton}>
+              {/* <TouchableOpacity style={styles.actionButton}>
                 <Text style={styles.actionText}>Edit</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.actionButton}>
@@ -148,7 +152,8 @@ const Valuations = ({ isAllValuations }: { isAllValuations?: boolean }) => {
               </TouchableOpacity>
               <TouchableOpacity style={styles.actionButton}>
                 <Text style={styles.actionText}>More</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
+              <ValuationActions valuation={item} />
             </View>
           </View>
         );
