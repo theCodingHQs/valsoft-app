@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import {
-  Modal as RNModal,
-  View,
-  Pressable,
-  TouchableWithoutFeedback,
   KeyboardAvoidingView,
-  StyleSheet,
   Platform,
+  Pressable,
+  Modal as RNModal,
   StyleProp,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
   ViewStyle,
 } from 'react-native';
 import { useTheme } from 'react-native-paper';
@@ -73,7 +73,8 @@ export const Modal: React.FC<ModalProps> = ({
 
 const styles = StyleSheet.create({
   triggerDefault: {
-    padding: 4, // <-- default padding you wanted
+    padding: 4, 
+    backgroundColor:"#fff",
     borderRadius: 4,
     shadowColor: '#000',
     shadowOffset: { width: 1, height: 1 },

@@ -11,9 +11,24 @@ async function getAllValuations() {
   return response.data;
 }
 
+async function getValuationById(id: string | number) {
+  const response = await apiClient.get(`valuations/${id}`);
+  return response.data;
+}
+
+
+
 export const useValuations = (isAllValuations: boolean): UseQueryResult => {
   return useQuery({
     queryKey: ['valuations', isAllValuations],
     queryFn: isAllValuations ? getAllValuations : getValuations,
+  });
+};
+
+export const useValuationById = (id: string | number): UseQueryResult => {
+  return useQuery({
+    queryKey: ['valuations', id],
+    queryFn: ()=> getValuationById(id),
+    enabled: !!id,
   });
 };

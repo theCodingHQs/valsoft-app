@@ -2,7 +2,7 @@ export interface ValuationIndex {
     id: number
     institution_id: string
     institution_template_id: string
-    initiation_date: date
+    initiation_date: Date
     branch_name: string
     application_number: string
     application_number_2: string
@@ -15,7 +15,7 @@ export interface ValuationIndex {
     earlier_valuation_done: string
     earlier_valuer_name: string
     earlier_valuation_date: string
-    expected_completion_date: date
+    expected_completion_date: Date
     reference_number: string
     title: string
     address: string
@@ -31,13 +31,12 @@ export interface ValuationIndex {
     contact_email: string
     contact_alternate_email: string
     fee: string
-    dispatch_date: string
     formatted_dispatch_date: string
     inward_remarks: string
     visitor_name: string
     maker_user_id: number
     area_location: string
-    dispatch_date: date
+    dispatch_date: Date
     property_id: number
     property_visit_id: number
     status_code: string
@@ -55,4 +54,36 @@ export interface ValuationIndex {
     proposed_visitor: number
     formatted_visit_rescheduled_date: string
     visit_delay_reason: string
+}
+
+export interface Property {
+    id?: number
+    valuation_id: number
+    proposed_visitor?: string
+    project_name?: string
+    survey_number?: number
+    flat_number?: number
+    building_name?: string
+    village_name?: string
+    landmark?: string
+    pin_code?: string
+    latitude?: number
+    longitude?: number
+    north?: string
+    south?: string
+    west?: string
+    east?: string
+    no_of_basements?: number
+    no_of_ground_floors?: number
+    no_of_podiums?: number
+    no_of_upper_floors?: number
+    proposed_floors?: number
+    area_type?: string
+    area?: number
+    plot_area?: number
+    terrace_area?: number
+    plan_area?: number
+    plan_plot_area?: number
+    plan_terrace_area?: number
+    property_visit_id?: number
 }

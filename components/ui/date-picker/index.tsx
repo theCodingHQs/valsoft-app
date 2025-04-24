@@ -1,5 +1,5 @@
-import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
 import {
@@ -14,7 +14,7 @@ const DatePicker = ({
   date: CalendarDate;
   onChangeOrConfirm: SingleChange;
 }) => {
-  const { colors, roundness } = useTheme();
+  const { colors, roundness,  } = useTheme();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const toggleDatePicker = () => {
@@ -31,7 +31,9 @@ const DatePicker = ({
       style={{
         backgroundColor: colors.background,
         borderRadius: roundness,
-        padding: 0,
+        borderWidth: 1,
+        borderColor: colors.onBackground,
+        marginTop: 2,
         height: 35,
         justifyContent: 'center',
       }}

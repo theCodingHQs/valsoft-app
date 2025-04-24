@@ -1,28 +1,13 @@
-import apiClient from '@/helpers/api-client';
-import { accordionColorTrigger } from '@/hooks';
 import { useSearchStore } from '@/store/search';
-import { useQuery } from '@tanstack/react-query';
-import { useLocalSearchParams } from 'expo-router';
-import {
-  Building2,
-  Calendar,
-  Hash,
-  MapPin,
-  Phone,
-  PhoneCall,
-  User,
-} from 'lucide-react-native';
 import {
   ActivityIndicator,
   Dimensions,
   ScrollView,
   StyleSheet,
-  Text,
-  TextStyle,
-  View,
+  View
 } from 'react-native';
-import { useValuations } from './api';
-import { ValuationActions } from './valuation-actions';
+import { useValuations } from './api-queries/valuation';
+import ValuationCard from './valuation-card';
 
 const { width } = Dimensions.get('window');
 
@@ -41,163 +26,18 @@ const Valuations = ({ isAllValuations }: { isAllValuations?: boolean }) => {
           </View>
   }
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={valuationStyles.container}>
       {filteredData?.map((item: any, index: number) => {
-        const { backgroundColor, color } = accordionColorTrigger(
-          item.status_code
-        );
+        
         return (
-          <View key={index} style={{ ...styles.card, borderColor: `#fff` }}>
-            <View style={{ ...styles.cardHeader, backgroundColor }}>
-              <View style={styles.headerItem}>
-                <User size={18} color="#444" />
-                <Text
-                  style={{
-                    ...styles.headerText,
-                    fontWeight: 'bold',
-                    fontSize: 18,
-                  }}
-                >
-                  {item.applicant_name}
-                </Text>
-              </View>
-              <View style={styles.headerItem}>
-                <Building2 size={18} color="#444" />
-                <Text style={styles.headerText}>{item.institution_name}</Text>
-              </View>
-              <View style={styles.headerItem}>
-                <Hash size={18} color="#444" />
-                <Text style={styles.headerTitle}>Reference Number:</Text>
-                <Text
-                  style={{ ...styles.headerText, fontWeight: 'bold', color }}
-                >
-                  {item.reference_number}
-                </Text>
-              </View>
-            </View>
-
-            <View
-              style={{
-                ...styles.cardBody,
-                boxShadow: `inset 0 3px 10px ${backgroundColor}`,
-                borderColor: backgroundColor,
-              }}
-            >
-              <Section title="Applicant Details">
-                <Detail
-                  value={item.applicant_phone_number}
-                  icon={<Phone color="#444" size={16} />}
-                />
-                <Detail
-                  value={item.address}
-                  icon={<MapPin color="#444" size={16} />}
-                />
-              </Section>
-
-              <Section title="Contact Information">
-                <Detail
-                  value={item.contact_name}
-                  icon={<User color="#444" size={16} />}
-                />
-                <Detail
-                  value={item.contact_phone_number}
-                  icon={<Phone color="#444" size={16} />}
-                />
-                <Detail
-                  value={item.contact_alternate_phone_number}
-                  icon={<PhoneCall color="#444" size={16} />}
-                />
-                <Detail
-                  title="Status :"
-                  value={item.status_desc}
-                  detailValueStyle={{ color, fontWeight: 'bold' }}
-                />
-              </Section>
-
-              <Section title="Branch Contact">
-                <Detail
-                  value={item.branch_contact_person_name}
-                  icon={<User color="#444" size={16} />}
-                />
-                <Detail
-                  value={item.branch_contact_person_phone_number}
-                  icon={<Phone color="#444" size={16} />}
-                />
-                <Detail
-                  value={item.branch_contact_person_alternate_phone_number}
-                  icon={<PhoneCall color="#444" size={16} />}
-                />
-              </Section>
-
-              <Section title="Important Dates">
-                <Detail
-                  title="Initiation Date"
-                  value={item.formatted_initiation_date}
-                  icon={<Calendar color="#444" size={16} />}
-                />
-                <Detail
-                  title="Expected Completion"
-                  value={item.expected_completion_date}
-                  icon={<Calendar color="#444" size={16} />}
-                />
-              </Section>
-            </View>
-
-            <View style={{ ...styles.cardFooter, backgroundColor }}>
-              {/* <TouchableOpacity style={styles.actionButton}>
-                <Text style={styles.actionText}>Edit</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.actionButton}>
-                <Text style={styles.actionText}>Delete</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.actionButton}>
-                <Text style={styles.actionText}>More</Text>
-              </TouchableOpacity> */}
-              <ValuationActions valuation={item} />
-            </View>
-          </View>
+          <ValuationCard key={index} valuation={item} />
         );
       })}
     </ScrollView>
   );
 };
 
-const Section = ({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) => (
-  <View style={{ ...styles.section }}>
-    <Text style={styles.sectionTitle}>{title}</Text>
-    <View style={styles.sectionContent}>{children}</View>
-  </View>
-);
-
-const Detail = ({
-  title,
-  value,
-  icon,
-  detailValueStyle,
-}: {
-  title?: string;
-  value: string;
-  icon?: React.ReactNode;
-  detailValueStyle?: TextStyle;
-}) => {
-  return (
-    <View style={styles.detailRow}>
-      {icon && <View style={styles.icon}>{icon}</View>}
-      {title && <Text style={styles.detailLabel}>{title}</Text>}
-      <Text style={{ ...styles.detailValue, ...detailValueStyle }}>
-        {value || 'NA'}
-      </Text>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
+export const valuationStyles = StyleSheet.create({
   container: {
     padding: 10,
     alignItems: 'center',
