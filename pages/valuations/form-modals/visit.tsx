@@ -1,13 +1,16 @@
 import { Modal } from '@/components/modal';
 import { DoorOpen } from 'lucide-react-native';
-import { Text, View } from 'react-native';
+import VisitForm from '../forms/visit';
 
-const VisitModal = () => {
+interface VisitFormProps {
+  propertyId: number;
+  propertyVisitId?: number;
+}
+
+const VisitModal = ({ propertyId, propertyVisitId }: VisitFormProps) => {
   return (
     <Modal triggerIcon={<DoorOpen size={18} color="#444" />}>
-      <View>
-        <Text>Visit</Text>
-      </View>
+      <VisitForm propertyId={propertyId} propertyVisitId={propertyVisitId} />
     </Modal>
   );
 };

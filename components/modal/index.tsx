@@ -4,6 +4,7 @@ import {
   Platform,
   Pressable,
   Modal as RNModal,
+  ScrollView,
   StyleProp,
   StyleSheet,
   TouchableWithoutFeedback,
@@ -19,6 +20,7 @@ interface ModalProps {
   children: React.ReactNode;
   transparent?: boolean;
   animationType?: 'none' | 'slide' | 'fade';
+  modalStyle?: ViewStyle;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -28,6 +30,7 @@ export const Modal: React.FC<ModalProps> = ({
   children,
   transparent = true,
   animationType = 'fade',
+  modalStyle = {},
 }) => {
   const { colors, roundness } = useTheme();
 
@@ -61,9 +64,13 @@ export const Modal: React.FC<ModalProps> = ({
           style={styles.centeredView}
         >
           <View
-            style={{ ...styles.modalView, backgroundColor: colors.background }}
+            style={{
+              ...styles.modalStyle,
+              backgroundColor: colors.background,
+              ...modalStyle,
+            }}
           >
-            {children}
+            <ScrollView style={{ flex: 1 }}>{children}</ScrollView>
           </View>
         </KeyboardAvoidingView>
       </RNModal>
@@ -73,8 +80,8 @@ export const Modal: React.FC<ModalProps> = ({
 
 const styles = StyleSheet.create({
   triggerDefault: {
-    padding: 4, 
-    backgroundColor:"#fff",
+    padding: 4,
+    backgroundColor: '#fff',
     borderRadius: 4,
     shadowColor: '#000',
     shadowOffset: { width: 1, height: 1 },
@@ -90,7 +97,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  modalView: {
+  modalStyle: {
     width: '95%',
     height: '95%',
     borderRadius: 8,

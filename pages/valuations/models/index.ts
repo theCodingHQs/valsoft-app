@@ -56,6 +56,232 @@ export interface ValuationIndex {
     visit_delay_reason: string
 }
 
+
+export interface PropertyVisit {
+    id?: number | undefined
+    visited_by?: string | undefined
+    property_id?: number | undefined
+    valuation_id?: number | undefined
+    visit_date?: Date
+    project_name?: string
+    building_name?: string
+    flat_number?: string
+    survey_number?: string
+    floor?: string
+    village_name?: string
+    landmark?: string
+    pin_code?: string
+    latitude?: string
+    longitude?: string
+    construction_stage?: string
+    construction_year?: string
+    project_start_date?: Date
+    project_end_date?: Date
+    work_completed?: string
+    pertmitted_use_of_property?: string
+    parking_alloted?: string
+    address?: string
+    property_type?: string
+    structure_type?: string
+    property_condition?: string
+    doors?: string
+    windows?: string
+    flooring?: string
+    kitchen_platform?: string
+    paint?: string
+    electrification?: string
+    plumbing?: string
+    amenities?: string[]
+    permitted_property_use?: string
+    actual_property_use?: string
+    no_of_lifts?: number
+    no_of_tenements_per_floor?: number
+    no_of_wings?: number
+    no_of_ground_floors?: number
+    no_of_stilt_floors?: number
+    no_of_basements?: number
+    no_of_podiums?: number
+    no_of_upper_floors?: number
+    site_floors?: number
+    ground_floor_details?: string
+    parking_allotted?: string
+    no_of_open_parkings?: number
+    no_of_closed_parkings?: number
+    area?: number
+    plot_area?: number
+    terrace_area?: number
+    surrounding_area?: string
+    property_access?: string
+    locality_nature?: string
+    locality_class?: string
+    locality_negative?: string
+    locality_negative_remark?: string
+    easily_identifiable?: string
+    identified_by_us?: string
+    demarcated?: string
+    accommodation_details?: string
+    area_purpose?: string
+    north?: string
+    south?: string
+    east?: string
+    west?: string
+    hospital_name?: string
+    hospital_distance?: number
+    railway_station_name?: string
+    railway_station_distance?: number
+    bus_stop_name?: string
+    bus_stop_distance?: number
+    road_name?: string
+    road_width?: string
+    market_rate_reference?: string
+    rental_details?: string
+    remarks?: string
+    occupancy_status?: string
+    relation_with_applicant?: string
+    occupied_since?: string
+    occupied_by?: string
+    person_on_site_name?: string
+    person_on_site_relation_with_applicant?: string
+    person_on_site_contact_number?: number
+    nameplate?: string
+}
+
+type Code = {
+    code_type: string
+    code_value: string
+}
+
+export interface PropertyVisitOptions {
+    construction_stage: Code[]
+    property_type: Code[]
+    structure_type: Code[]
+    property_condition: Code[]
+    doors: Code[]
+    windows: Code[]
+    flooring: Code[]
+    kitchen_platform: Code[]
+    paint: Code[]
+    electrification: Code[]
+    plumbing: Code[]
+    amenities: Code[]
+    ground_floor_details: Code[]
+    parking_alloted: Code[]
+    surrounding_area: Code[]
+    property_access: Code[]
+    locality_nature: Code[]
+    locality_class: Code[]
+    locality_negative: Code[]
+    easily_identifiable: Code[]
+    identified_by_us: Code[]
+    demarcated: Code[]
+    // occupancy
+    occupancy_status: Code[]
+    occupant_relation: Code[]
+
+    // property details
+    proximity: Code[]
+    transport_modes: Code[]
+    land_tenures: Code[]
+    unauthorized: Code[]
+    confirming_to_local_byelaws: Code[]
+    deviation_from_building_byelaws: Code[]
+    deviation_levels: Code[]
+    risk_of_demolition: Code[]
+    prone_to_natural_disasters: Code[]
+    customer_estimates_given: Code[]
+    market_for_sale: Code[]
+    market_for_lease: Code[]
+    market_price_volatility: Code[]
+}
+
+export interface PropertyVisit {
+    id?: number | undefined
+    visited_by?: string | undefined
+    property_id?: number | undefined
+    valuation_id?: number | undefined
+    visit_date?: Date
+    project_name?: string
+    building_name?: string
+    flat_number?: string
+    survey_number?: string
+    floor?: string
+    village_name?: string
+    landmark?: string
+    pin_code?: string
+    latitude?: string
+    longitude?: string
+    construction_stage?: string
+    construction_year?: string
+    project_start_date?: Date
+    project_end_date?: Date
+    work_completed?: string
+    pertmitted_use_of_property?: string
+    parking_alloted?: string
+    address?: string
+    property_type?: string
+    structure_type?: string
+    property_condition?: string
+    doors?: string
+    windows?: string
+    flooring?: string
+    kitchen_platform?: string
+    paint?: string
+    electrification?: string
+    plumbing?: string
+    amenities?: string[]
+    permitted_property_use?: string
+    actual_property_use?: string
+    no_of_lifts?: number
+    no_of_tenements_per_floor?: number
+    no_of_wings?: number
+    no_of_ground_floors?: number
+    no_of_stilt_floors?: number
+    no_of_basements?: number
+    no_of_podiums?: number
+    no_of_upper_floors?: number
+    site_floors?: number
+    ground_floor_details?: string
+    parking_allotted?: string
+    no_of_open_parkings?: number
+    no_of_closed_parkings?: number
+    area?: number
+    plot_area?: number
+    terrace_area?: number
+    surrounding_area?: string
+    property_access?: string
+    locality_nature?: string
+    locality_class?: string
+    locality_negative?: string
+    locality_negative_remark?: string
+    easily_identifiable?: string
+    identified_by_us?: string
+    demarcated?: string
+    accommodation_details?: string
+    area_purpose?: string
+    north?: string
+    south?: string
+    east?: string
+    west?: string
+    hospital_name?: string
+    hospital_distance?: number
+    railway_station_name?: string
+    railway_station_distance?: number
+    bus_stop_name?: string
+    bus_stop_distance?: number
+    road_name?: string
+    road_width?: string
+    market_rate_reference?: string
+    rental_details?: string
+    remarks?: string
+    occupancy_status?: string
+    relation_with_applicant?: string
+    occupied_since?: string
+    occupied_by?: string
+    person_on_site_name?: string
+    person_on_site_relation_with_applicant?: string
+    person_on_site_contact_number?: number
+    nameplate?: string
+}
 export interface Property {
     id?: number
     valuation_id: number
