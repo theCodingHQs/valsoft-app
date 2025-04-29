@@ -1,5 +1,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import * as z from 'zod';
 import { coerceUndefinedOrEmptyToNull, stringNotEmpty, undefinedOrEmptyToNull } from "./validations";
@@ -25,7 +26,23 @@ const visitFormSchema = z.object({
     id: z.number().optional(),
     property_id: z.number(),
     visited_by: z.number(),
-    visit_date: z.string(),
+    visit_date: z.preprocess((val) => {
+        if (val instanceof Date && !isNaN(val.getTime())) {
+          // Convert Date to required format
+          return format(val, "yyyy-MM-dd'T'HH:mm")
+        }
+        return val // assume it's already a string
+      },
+      z.string()
+        .nonempty("Reschedule Date and Time required.")
+        .refine((val) => {
+          const inputDateTime = new Date(val)
+          const currentDateTime = new Date()
+          return inputDateTime >= currentDateTime
+        }, {
+          message: "Cannot select a time earlier than the current date and time.",
+        })
+      ),
     project_name: undefinedOrEmptyToNull,
     building_name: undefinedOrEmptyToNull,
     flat_number: undefinedOrEmptyToNull,

@@ -20,16 +20,19 @@ const DropDownMenu = ({
   labelField = 'code_desc',
   onChange,
 }: DropDownMenuProps) => {
-  console.log(value);
   const selectedItem = list.find((item) => item[valueField] == value);
   const { colors, roundness } = useTheme();
-  const selectedStyle = {
-    backgroundColor: colors.primary,
-    color: colors.inversePrimary,
-  };
+
+  const getIsSelected = (item: any) =>
+    selectedItem?.[valueField] === item[valueField];
+
   return (
     <Modal
-      modalStyle={{ width: 300, height: 'auto', backgroundColor: 'white' }}
+      modalStyle={{
+        width: 300,
+        height: Math.min(list.length * 40 + 50, 400),
+        backgroundColor: 'white',
+      }}
       triggerStyle={{ padding: 0, backgroundColor: 'transparent' }}
       triggerIcon={
         <View
@@ -71,6 +74,7 @@ const DropDownMenu = ({
           display: 'flex',
           flexDirection: 'column',
           gap: 4,
+          padding: 10,
         }}
       >
         {list.map((item) => (
@@ -81,28 +85,36 @@ const DropDownMenu = ({
             }}
             onPress={() => onChange?.(item[valueField])}
           >
-            <View>
+            <View
+              style={{
+                borderRadius: roundness,
+                overflow: 'hidden',
+                backgroundColor: getIsSelected(item)
+                  ? colors.primary
+                  : '#f0f0f0',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingRight: 10,
+              }}
+            >
               <Text
                 style={{
-                  borderRadius: roundness,
+                  // width: '100%',
+                  flexGrow: 1,
+                  height: '100%',
                   padding: 6,
-                  color: '#444',
-                  backgroundColor: '#f0f0f0',
-                  opacity: 10,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  ...(selectedItem?.[valueField] === item[valueField]
-                    ? selectedStyle
-                    : {}),
+                  color: getIsSelected(item) ? colors.inversePrimary : '#444',
                 }}
               >
-                {<>{item[labelField]}</>}
-                {selectedItem?.[valueField] === item[valueField] && (
-                  <CheckIcon size={18} color="#444" />
-                )}
+                {item[labelField]}
               </Text>
+              {selectedItem?.[valueField] === item[valueField] && (
+                <Text>
+                  <CheckIcon size={18} color="#444" />
+                </Text>
+              )}
             </View>
           </Pressable>
         ))}

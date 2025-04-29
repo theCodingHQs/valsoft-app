@@ -14,7 +14,7 @@ const DatePicker = ({
   date: CalendarDate;
   onChangeOrConfirm: SingleChange;
 }) => {
-  const { colors, roundness,  } = useTheme();
+  const { colors, roundness } = useTheme();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const toggleDatePicker = () => {
@@ -39,7 +39,13 @@ const DatePicker = ({
       }}
     >
       <TouchableOpacity onPress={toggleDatePicker}>
-        <Text style={{ paddingHorizontal: 10, paddingVertical: 6, color: colors.primary }}>
+        <Text
+          style={{
+            paddingHorizontal: 10,
+            paddingVertical: 6,
+            color: colors.onBackground,
+          }}
+        >
           {date ? date.toDateString?.() ?? 'Select Date' : 'Select Date'}
         </Text>
       </TouchableOpacity>

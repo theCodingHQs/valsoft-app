@@ -1,8 +1,7 @@
 import storage from '@/helpers/auth';
 import { router } from 'expo-router';
-import { LogOut } from 'lucide-react-native';
-import { HelpCircle, Settings } from 'lucide-react-native';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { HelpCircle, LogOut, Settings } from 'lucide-react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 export default function Profile() {
   const handleLogout = async () => {
@@ -25,7 +24,10 @@ export default function Profile() {
       </View>
       <View>
         <View style={styles.divider} />
-        <Pressable style={{...styles.menuItem, marginLeft: 'auto'}} onPress={handleLogout}>
+        <Pressable
+          style={{ ...styles.menuItem, marginLeft: 'auto' }}
+          onPress={handleLogout}
+        >
           <LogOut size={20} color="#FF3B30" />
           <Text style={[styles.menuText, styles.logoutText]}>Logout</Text>
         </Pressable>
@@ -44,9 +46,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
   menuContainer: {
-   display: 'flex',
-   flexDirection: 'column',
-   justifyContent: 'space-between',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     backgroundColor: 'white',
     borderRadius: 8,
     padding: 8,

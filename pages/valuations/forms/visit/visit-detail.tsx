@@ -1,10 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-paper';
 
-import { format } from 'date-fns';
-import { z } from 'zod';
-
 import {
+  ControlledDatePicker,
   ControlledDropDownMenu,
   ControlledTextInput,
 } from '@/components/ui/react-hook-form-controlled-fields';
@@ -12,38 +10,6 @@ import { formatDateymd } from '@/helpers/utils';
 import { useUpdatePropertyVisit } from '../../api-queries/property-visit';
 import { Property, PropertyVisit, PropertyVisitOptions } from '../../models';
 import { useVisitForm } from './form-schema';
-
-const FormSchema = z.object({
-  id: z.number(),
-
-  visit_rescheduled_date: z.preprocess(
-    (val) => {
-      if (val instanceof Date && !isNaN(val.getTime())) {
-        // Convert Date to required format
-        return format(val, "yyyy-MM-dd'T'HH:mm");
-      }
-      return val; // assume it's already a string
-    },
-    z
-      .string()
-      .nonempty('Reschedule Date and Time required.')
-      .refine(
-        (val) => {
-          const inputDateTime = new Date(val);
-          const currentDateTime = new Date();
-          return inputDateTime >= currentDateTime;
-        },
-        {
-          message:
-            'Cannot select a time earlier than the current date and time.',
-        }
-      )
-  ),
-
-  visit_delay_reason: z.string().nonempty({ message: 'Delay Reason Required' }),
-});
-
-type FormData = z.infer<typeof FormSchema>;
 
 interface PropertyVisitProps {
   property: Property;
@@ -90,6 +56,11 @@ const VisitDetail = ({
           list={orgUsers ?? []}
         />
 
+        <ControlledDatePicker
+          label="Visited Date"
+          name="visit_date"
+          validation={validation}
+        />
         <ControlledTextInput
           label="Project Name"
           name="project_name"
@@ -145,10 +116,7 @@ const VisitDetail = ({
           label="Construction Stage"
           name="construction_stage"
           validation={validation}
-          list={[
-            { code_value: '1', code_desc: 'Under Construction' },
-            { code_value: '2', code_desc: 'Completed' },
-          ]}
+          list={propertyVisitOptions?.construction_stage ?? []}
         />
         <ControlledTextInput
           label="Construction Year"
@@ -458,6 +426,12 @@ const VisitDetail = ({
           label="Market rate reference"
           name="market_rate_reference"
           validation={validation}
+        />
+        <ControlledTextInput
+          label="Market rate reference"
+          name="market_rate_reference"
+          validation={validation}
+          multiline
         />
         <ControlledTextInput
           label="Rental Details"
