@@ -15,10 +15,10 @@ const DatePicker = ({
   onChangeOrConfirm: SingleChange;
 }) => {
   const { colors, roundness } = useTheme();
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
 
   const toggleDatePicker = () => {
-    setDatePickerVisibility(!isDatePickerVisible);
+    setIsDatePickerVisible(!isDatePickerVisible);
   };
 
   const handleDateSelect = (params: { date: CalendarDate | undefined }) => {
@@ -32,7 +32,7 @@ const DatePicker = ({
         backgroundColor: colors.background,
         borderRadius: roundness,
         borderWidth: 1,
-        borderColor: colors.onBackground,
+        borderColor: colors.outline,
         marginTop: 2,
         height: 35,
         justifyContent: 'center',

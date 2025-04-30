@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { useOrgUsers } from '@/pages/users/api-queries/user';
 import { useEffect, useState } from 'react';
+import { Button, Text } from 'react-native-paper';
 import { usePropertyById } from '../api-queries/property';
 import {
   useAddPropertyVisit,
@@ -18,6 +19,7 @@ export default function VisitForm({
   propertyId: number;
   propertyVisitId?: number;
 }) {
+  const [activeTab, setActiveTab] = useState('visit-details');
   const [addedProperty, setAddedProperty] = useState<PropertyVisit | null>(
     null
   );
@@ -47,13 +49,38 @@ export default function VisitForm({
 
   return (
     <View style={styles.container}>
-      <VisitDetail
-        addPropertyVisit={addPropertyVisit}
-        property={property as Property}
-        propertyVisit={propertyVisit}
-        orgUsers={orgUsers}
-        propertyVisitOptions={propertyVisitOptions as PropertyVisitOptions}
-      />
+      <View style={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+        <Button
+          mode={activeTab === 'visit-details' ? 'contained' : 'elevated'}
+          onPress={() => setActiveTab('visit-details')}
+          style={{ padding: 0 }}
+        >
+          <Text style={{ fontSize: 13 }}>Details</Text>
+        </Button>
+        <Button
+          mode={activeTab === 'visit-occupancy' ? 'contained' : 'elevated'}
+          onPress={() => setActiveTab('visit-occupancy')}
+          style={{ padding: 0 }}
+        >
+          <Text style={{ fontSize: 13 }}>Occupancy</Text>
+        </Button>
+        <Button
+          mode={activeTab === 'visit-documents' ? 'contained' : 'elevated'}
+          onPress={() => setActiveTab('visit-documents')}
+          style={{ padding: 0 }}
+        >
+          <Text style={{ fontSize: 13 }}>Documents</Text>
+        </Button>
+      </View>
+      {activeTab === 'visit-details' && (
+        <VisitDetail
+          addPropertyVisit={addPropertyVisit}
+          property={property as Property}
+          propertyVisit={propertyVisit!}
+          orgUsers={orgUsers}
+          propertyVisitOptions={propertyVisitOptions as PropertyVisitOptions}
+        />
+      )}
     </View>
   );
 }

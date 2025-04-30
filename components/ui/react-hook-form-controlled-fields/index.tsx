@@ -129,8 +129,9 @@ const ControllerView = ({
     render={(...args) => (
       <View
         style={{
-          marginBottom: 10,
-          marginTop: 10,
+          marginBottom: 1,
+          marginTop: 1,
+          minWidth: 230,
           width: multiline || Platform.OS !== 'web' ? '100%' : 'auto',
         }}
       >

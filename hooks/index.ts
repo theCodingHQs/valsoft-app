@@ -47,3 +47,23 @@ export const accordionColorTrigger = (
     }
   );
 };
+
+
+
+
+import { Alert, Linking } from 'react-native';
+
+export const usePhoneDialer = () => {
+  const dial = async (phoneNumber: string) => {
+    const url = `tel:${phoneNumber}`;
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert("Phone call not supported on this device");
+    }
+  };
+
+  return { dial };
+};
