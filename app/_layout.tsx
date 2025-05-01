@@ -1,14 +1,13 @@
 import AuthMiddleware from '@/components/auth-middleware';
-import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
 import storage from '@/helpers/auth';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useFonts } from 'expo-font';
 import { router, Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet } from 'react-native';
 import { useEffect } from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 
 const queryClient = new QueryClient({
@@ -29,8 +28,6 @@ const queryClient = new QueryClient({
 });
 
 queryClient.getQueryCache().subscribe((event) => {
-  console.log(event);
-
   if (event?.query?.state?.status === 'error') {
     const error = event.query.state.error as any;
 
@@ -62,7 +59,7 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* <GluestackUIProvider mode="system"> */}
-      <PaperProvider >
+      <PaperProvider>
         <AuthMiddleware>
           <SafeAreaView style={styles.container}>
             <Stack screenOptions={{ headerShown: false }}>

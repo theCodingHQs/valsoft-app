@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -21,6 +21,8 @@ interface ModalProps {
   transparent?: boolean;
   animationType?: 'none' | 'slide' | 'fade';
   modalStyle?: ViewStyle;
+  isOpen?: boolean;
+  setIsOpen?: (isOpen: boolean) => void;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -31,14 +33,32 @@ export const Modal: React.FC<ModalProps> = ({
   transparent = true,
   animationType = 'fade',
   modalStyle = {},
+  isOpen = false,
+  setIsOpen,
 }) => {
   const { colors, roundness } = useTheme();
 
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(isOpen);
 
-  const openModal = () => setVisible(true);
-  const closeModal = () => setVisible(false);
+  const openModal = () => {
+    if (setIsOpen) {
+      setIsOpen(true);
+    } else {
+      setVisible(true);
+    }
+  };
 
+  const closeModal = () => {
+    if (setIsOpen) {
+      setIsOpen(false);
+    } else {
+      setVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    setVisible(isOpen);
+  }, [isOpen]);
   return (
     <>
       <Pressable

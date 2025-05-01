@@ -1,5 +1,6 @@
 import { Modal } from '@/components/modal';
 import { CheckIcon, ChevronDownIcon } from 'lucide-react-native';
+import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { Text, TextInput, useTheme } from 'react-native-paper';
 
@@ -20,14 +21,23 @@ const DropDownMenu = ({
   labelField = 'code_desc',
   onChange,
 }: DropDownMenuProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const selectedItem = list.find((item) => item[valueField] == value);
   const { colors, roundness } = useTheme();
 
   const getIsSelected = (item: any) =>
     selectedItem?.[valueField] === item[valueField];
 
+  const onSelectItem = (item: any) => {
+    onChange?.(item[valueField]);
+    setIsOpen(false);
+  };
+
   return (
     <Modal
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
       modalStyle={{
         width: 300,
         height: Math.min(list.length * 40 + 50, 400),
@@ -83,7 +93,7 @@ const DropDownMenu = ({
             style={{
               width: '100%',
             }}
-            onPress={() => onChange?.(item[valueField])}
+            onPress={() => onSelectItem(item)}
           >
             <View
               style={{

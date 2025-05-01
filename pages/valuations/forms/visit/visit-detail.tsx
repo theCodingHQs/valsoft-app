@@ -33,14 +33,13 @@ const VisitDetail = ({
   });
 
   const { mutate: updatePropertyVisit } = useUpdatePropertyVisit();
-  console.log(validation.getValues());
-  console.log(validation.formState.errors);
+  console.log(propertyVisit);
   const onSubmit = (data) => {
     // console.log(data)
     if (propertyVisit?.id) {
       updatePropertyVisit({ ...data });
     } else {
-      addPropertyVisit({ ...data });
+      addPropertyVisit({ ...data, amenities: [] });
     }
   };
 

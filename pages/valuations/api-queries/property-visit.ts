@@ -13,7 +13,7 @@ async function getPropertyVisitOptions() {
 }
 
 async function addPropertyVisit(data: PropertyVisit) {
-  return apiClient.put(`properties/${data.property_id}/property_visits`, {
+  return apiClient.post(`properties/${data.property_id}/property_visits`, {
     valuations_property_visit: data,
   });
 }

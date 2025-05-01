@@ -29,7 +29,7 @@ const visitFormSchema = z.object({
     visit_date: z.preprocess((val) => {
         if (val instanceof Date && !isNaN(val.getTime())) {
           // Convert Date to required format
-          return format(val, "yyyy-MM-dd'T'HH:mm")
+          return format(val, "yyyy-MM-dd")
         }
         return val // assume it's already a string
       },

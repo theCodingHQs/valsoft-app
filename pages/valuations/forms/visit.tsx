@@ -28,7 +28,7 @@ export default function VisitForm({
     data: propertyVisit,
     isLoading,
     refetch: propertyVisitRefetch,
-  } = usePropertyVisitById(propertyVisitId ?? addedProperty?.id);
+  } = usePropertyVisitById(propertyVisitId ?? addedProperty?.id!);
   const { data: property } = usePropertyById(propertyId);
   const { data: propertyVisitOptions } = usePropertyVisitOptions();
 
@@ -57,20 +57,24 @@ export default function VisitForm({
         >
           <Text style={{ fontSize: 13 }}>Details</Text>
         </Button>
-        <Button
-          mode={activeTab === 'visit-occupancy' ? 'contained' : 'elevated'}
-          onPress={() => setActiveTab('visit-occupancy')}
-          style={{ padding: 0 }}
-        >
-          <Text style={{ fontSize: 13 }}>Occupancy</Text>
-        </Button>
-        <Button
-          mode={activeTab === 'visit-documents' ? 'contained' : 'elevated'}
-          onPress={() => setActiveTab('visit-documents')}
-          style={{ padding: 0 }}
-        >
-          <Text style={{ fontSize: 13 }}>Documents</Text>
-        </Button>
+        {(propertyVisit?.id || addedProperty?.id) && (
+          <>
+            <Button
+              mode={activeTab === 'visit-occupancy' ? 'contained' : 'elevated'}
+              onPress={() => setActiveTab('visit-occupancy')}
+              style={{ padding: 0 }}
+            >
+              <Text style={{ fontSize: 13 }}>Occupancy</Text>
+            </Button>
+            <Button
+              mode={activeTab === 'visit-documents' ? 'contained' : 'elevated'}
+              onPress={() => setActiveTab('visit-documents')}
+              style={{ padding: 0 }}
+            >
+              <Text style={{ fontSize: 13 }}>Documents</Text>
+            </Button>
+          </>
+        )}
       </View>
       {activeTab === 'visit-details' && (
         <VisitDetail
