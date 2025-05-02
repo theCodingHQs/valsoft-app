@@ -1,6 +1,5 @@
 // utils/apiClient.ts
 import axios from 'axios';
-import * as SecureStore from 'expo-secure-store';
 import storage from './auth';
 
 const apiClient = axios.create({
@@ -19,5 +18,41 @@ apiClient.interceptors.request.use(async (config) => {
   }
   return config;
 });
+
+
+
+export async function upload(url, data) {
+  try {
+   
+    const token = await storage.getItem('token');
+
+    const config = {
+      headers: {
+        
+        Authorization: token ? token : '',
+      },
+    };
+
+    let response;
+    if (data.get('id')) {
+      response = await apiClient.put(url, data, config);
+    } else {
+      response = await apiClient.post(url, data, config);
+    }
+
+    // Check for successful status code (200-299)
+    if (response.status >= 200 && response.status <= 299) {
+      return response;
+    } else {
+      return response;
+    }
+  } catch (err) {
+    // Return error response or fallback if error.response is undefined
+    return Promise.resolve(err.response || { status: 500, data: { message: 'Network or server error' } });
+  }
+}
+
+
+
 
 export default apiClient;

@@ -33,9 +33,8 @@ const VisitDetail = ({
   });
 
   const { mutate: updatePropertyVisit } = useUpdatePropertyVisit();
-  console.log(propertyVisit);
+
   const onSubmit = (data) => {
-    // console.log(data)
     if (propertyVisit?.id) {
       updatePropertyVisit({ ...data });
     } else {

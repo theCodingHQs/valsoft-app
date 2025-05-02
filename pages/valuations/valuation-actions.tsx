@@ -10,11 +10,8 @@ interface ValuationActionsProps {
 export const ValuationActions: React.FC<ValuationActionsProps> = ({
   valuation,
 }) => {
- 
   return (
     <View style={styles.container}>
-
-    
       {!valuation?.draft && !valuation?.valuation_cancelled && (
         <VisitModal
           propertyId={valuation?.property_id}
@@ -26,9 +23,6 @@ export const ValuationActions: React.FC<ValuationActionsProps> = ({
         !valuation?.valuation_cancelled && (
           <VisitDelayModal propertyId={valuation?.property_id} />
         )}
-
-     
-      
     </View>
   );
 };

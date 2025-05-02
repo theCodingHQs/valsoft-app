@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
 import { useOrgUsers } from '@/pages/users/api-queries/user';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button, Text } from 'react-native-paper';
 import { usePropertyById } from '../api-queries/property';
 import {
@@ -9,8 +9,10 @@ import {
   usePropertyVisitById,
   usePropertyVisitOptions,
 } from '../api-queries/property-visit';
-import { Property, PropertyVisit, PropertyVisitOptions } from '../models';
+import { Property, PropertyVisitOptions } from '../models';
 import VisitDetail from './visit/visit-detail';
+import VisitDocuments from './visit/visit-documents';
+import VisitOccupancy from './visit/visit-occupancy';
 
 export default function VisitForm({
   propertyId,
@@ -20,15 +22,7 @@ export default function VisitForm({
   propertyVisitId?: number;
 }) {
   const [activeTab, setActiveTab] = useState('visit-details');
-  const [addedProperty, setAddedProperty] = useState<PropertyVisit | null>(
-    null
-  );
 
-  const {
-    data: propertyVisit,
-    isLoading,
-    refetch: propertyVisitRefetch,
-  } = usePropertyVisitById(propertyVisitId ?? addedProperty?.id!);
   const { data: property } = usePropertyById(propertyId);
   const { data: propertyVisitOptions } = usePropertyVisitOptions();
 
@@ -38,14 +32,23 @@ export default function VisitForm({
     isSuccess: isAddSuccess,
   } = useAddPropertyVisit();
 
+  const {
+    data: propertyVisit,
+    isLoading,
+    refetch: propertyVisitRefetch,
+  } = usePropertyVisitById(propertyVisitId ?? addedPropertyVisit?.id!);
+
+  const formData = useMemo(
+    () => propertyVisit ?? addedPropertyVisit,
+    [propertyVisit, addedPropertyVisit]
+  );
   const { data: orgUsers } = useOrgUsers();
 
   useEffect(() => {
     if (isAddSuccess) {
-      setAddedProperty(addedPropertyVisit as PropertyVisit);
       propertyVisitRefetch();
     }
-  }, [isAddSuccess, addedPropertyVisit]);
+  }, [isAddSuccess]);
 
   return (
     <View style={styles.container}>
@@ -57,7 +60,7 @@ export default function VisitForm({
         >
           <Text style={{ fontSize: 13 }}>Details</Text>
         </Button>
-        {(propertyVisit?.id || addedProperty?.id) && (
+        {(propertyVisit?.id || addedPropertyVisit?.id) && (
           <>
             <Button
               mode={activeTab === 'visit-occupancy' ? 'contained' : 'elevated'}
@@ -80,10 +83,20 @@ export default function VisitForm({
         <VisitDetail
           addPropertyVisit={addPropertyVisit}
           property={property as Property}
-          propertyVisit={propertyVisit!}
+          propertyVisit={formData}
           orgUsers={orgUsers}
           propertyVisitOptions={propertyVisitOptions as PropertyVisitOptions}
         />
+      )}
+
+      {activeTab === 'visit-occupancy' && (
+        <VisitOccupancy
+          propertyVisit={formData}
+          propertyVisitOptions={propertyVisitOptions as PropertyVisitOptions}
+        />
+      )}
+      {activeTab === 'visit-documents' && (
+        <VisitDocuments propertyVisit={formData} />
       )}
     </View>
   );

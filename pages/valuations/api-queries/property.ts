@@ -11,9 +11,10 @@ async function updatePropertyVisitDelay(data: {
   visit_rescheduled_date?: string;
   visit_delay_reason?: string;
 }) {
-  return apiClient.put(`${data.id}/property_visit_delayed`, {
+  const response = await apiClient.put(`${data.id}/property_visit_delayed`, {
     valuations_property: data,
   });
+  return response.data;
 }
 
 export const usePropertyById = (id: string | number): UseQueryResult => {

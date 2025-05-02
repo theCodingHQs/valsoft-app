@@ -27,7 +27,7 @@ export const useValuations = (isAllValuations: boolean): UseQueryResult => {
 
 export const useValuationById = (id: string | number): UseQueryResult => {
   return useQuery({
-    queryKey: ['valuations', id],
+    queryKey: [`valuations/${id}`],
     queryFn: ()=> getValuationById(id),
     enabled: !!id,
   });

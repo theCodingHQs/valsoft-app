@@ -184,7 +184,9 @@ export type VisitFormProps = z.infer<typeof visitFormSchema>
 export const useVisitForm = (defaultValues = {}) => {
     return useForm<VisitFormProps>({
         resolver: zodResolver(visitFormSchema),
-        defaultValues: defaultValues
+        // defaultValues: defaultValues,
+        values: defaultValues,
+        
     })
 }
 
@@ -219,7 +221,7 @@ export type VisitOccupancyFormProps = z.infer<typeof visitOccupancyFormSchema>
 export const useVisitOccupancyForm = (defaultValues = {}) => {
     return useForm<VisitOccupancyFormProps>({
         resolver: zodResolver(visitOccupancyFormSchema),
-        defaultValues: defaultValues
+        values: defaultValues
     })
 }
 // .refine((data) => {
@@ -246,6 +248,6 @@ export type VisitDocumentFormProps = z.infer<typeof visitDocumentFormSchema>
 export const useVisitDocumentForm = (defaultValues = {}) => {
     return useForm<VisitDocumentFormProps>({
         resolver: zodResolver(visitDocumentFormSchema),
-        defaultValues: defaultValues
+        values: defaultValues
     })
 }
