@@ -1,12 +1,17 @@
-import { router } from 'expo-router';
-import { useMutation } from '@tanstack/react-query';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
-import { useState } from 'react';
-import { z } from 'zod';
-import * as SecureStore from 'expo-secure-store';
 import apiClient from '@/helpers/api-client';
-import { Platform } from 'react-native';
+import { useMutation } from '@tanstack/react-query';
+import { router } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
+import { useState } from 'react';
+import {
+  ImageBackground,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
+import { z } from 'zod';
 
 const storeItem = async (key: string, value: string) => {
   if (Platform.OS === 'web') {
@@ -79,7 +84,9 @@ export default function Login() {
 
   return (
     <ImageBackground
-      source={{uri:'https://wallpaper.forfun.com/fetch/21/21af8682a3ad5631e44f7f4ca9500fe8.jpeg'}} // ⬅️ Use your image path here
+      source={{
+        uri: 'https://wallpaper.forfun.com/fetch/21/21af8682a3ad5631e44f7f4ca9500fe8.jpeg',
+      }} // ⬅️ Use your image path here
       style={{
         flex: 1,
         justifyContent: 'center',
@@ -87,7 +94,6 @@ export default function Login() {
       resizeMode="cover" // or "contain", "stretch", "repeat"
     >
       <View style={styles.container}>
-
         <Text style={styles.title}>Welcome Back</Text>
         <View style={styles.form}>
           <View>
@@ -127,7 +133,7 @@ export default function Login() {
           </Button>
         </View>
       </View>
-      </ImageBackground>
+    </ImageBackground>
   );
 }
 
@@ -146,10 +152,10 @@ const styles = StyleSheet.create({
   },
   form: {
     gap: 20,
-    padding:40,
+    padding: 40,
     backgroundColor: '#fff4',
-    borderRadius:5,
-      },
+    borderRadius: 5,
+  },
 
   error: {
     color: '#ff4444',

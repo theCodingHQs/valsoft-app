@@ -1,13 +1,14 @@
 import AuthMiddleware from '@/components/auth-middleware';
 import storage from '@/helpers/auth';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
+import { currentPathname, setCurrentPathname } from '@/utils/navigation-state';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
-import { router, Stack } from 'expo-router';
+import { router, Stack, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { Platform, SafeAreaView, StyleSheet } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 
 const queryClient = new QueryClient({
@@ -27,15 +28,20 @@ const queryClient = new QueryClient({
   },
 });
 
+const isWeb = Platform.OS === 'web';
+
 queryClient.getQueryCache().subscribe((event) => {
   if (event?.query?.state?.status === 'error') {
     const error = event.query.state.error as any;
 
     if (error?.response?.status === 401 || error?.response?.status === 403) {
-      // if (window.location.pathname !== '/login') {
-      storage.deleteItem('user');
-      router.replace('/login');
-      // }
+      if (isWeb) {
+        if (currentPathname !== '/login') {
+          storage.deleteItem('user');
+          storage.deleteItem('token');
+          router.replace('/login');
+        }
+      }
     }
   }
 });
@@ -52,6 +58,12 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setCurrentPathname(pathname);
+  }, [pathname]);
+
   if (!loaded) {
     return null;
   }
@@ -62,10 +74,7 @@ export default function RootLayout() {
       <PaperProvider>
         <AuthMiddleware>
           <SafeAreaView style={styles.container}>
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="(auth)/" options={{ headerShown: false }} />
-              <Stack.Screen name="(app)" options={{ headerShown: false }} />
-            </Stack>
+            <Stack screenOptions={{ headerShown: false }} />
             <StatusBar style="inverted" />
           </SafeAreaView>
         </AuthMiddleware>

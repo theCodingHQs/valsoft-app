@@ -6,8 +6,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 export default function Profile() {
   const handleLogout = async () => {
     await storage.deleteItem('user');
+    await storage.deleteItem('token');
     router.replace('/login');
-    console.log('Logout pressed');
   };
   return (
     <View style={styles.menuContainer}>
