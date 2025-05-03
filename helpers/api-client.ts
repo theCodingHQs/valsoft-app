@@ -28,7 +28,7 @@ export async function upload(url, data) {
 
     const config = {
       headers: {
-        
+        "Content-Type": "multipart/form-data",
         Authorization: token ? token : '',
       },
     };

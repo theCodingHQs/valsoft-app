@@ -28,7 +28,7 @@ const VisitDetail = ({
 }: PropertyVisitProps) => {
   const validation = useVisitForm({
     ...propertyVisit,
-    property_id: property.id,
+    property_id: property?.id,
     visit_date: propertyVisit?.visit_date || formatDateymd(new Date()),
   });
 
