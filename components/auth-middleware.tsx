@@ -28,7 +28,7 @@ export default function AuthMiddleware({
         if (!loggedIn && inAppGroup) {
           router.replace('/login');
         } else if (loggedIn && !inAppGroup && segments[0] !== undefined) {
-          router.replace('/valuations');
+          router.replace('/(app)/(tabs)/index');
         }
 
         // Set checking to false after navigation decision

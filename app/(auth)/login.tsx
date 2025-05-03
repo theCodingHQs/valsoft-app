@@ -59,7 +59,7 @@ export default function Login() {
         'isAutoReference',
         JSON.stringify(data.is_auto_reference)
       );
-      router.replace('/valuations');
+      router.replace('/');
     },
     onError: (error) => {
       console.error('Login error', error);

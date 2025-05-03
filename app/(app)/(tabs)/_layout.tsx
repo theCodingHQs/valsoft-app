@@ -17,27 +17,15 @@ export default function TabLayout() {
           },
         },
         tabBarActiveTintColor: '#007AFF',
-        // headerRight: () => (
-        //   <TouchableOpacity onPress={handleLogout} style={{ flexDirection: "row", alignItems: "center" }}>
-        //     <LogOut size={24} color="#007AFF" />
-        //   </TouchableOpacity>
-        // ),
       }}
     >
       <Tabs.Screen
-        name="valuations"
+        name="index"
         options={{
           title: 'Valuations',
           tabBarIcon: ({ color, size }) => <List size={size} color={color} />,
         }}
       />
-      {/* <Tabs.Screen
-        name="all-valuations"
-        options={{
-          title: 'All Valuations',
-          tabBarIcon: ({ color, size }) => <List size={size} color={color} />,
-        }}
-      /> */}
       <Tabs.Screen
         name="profile"
         options={{
