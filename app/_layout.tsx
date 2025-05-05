@@ -8,8 +8,9 @@ import { router, Stack, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { Platform, SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,20 +29,22 @@ const queryClient = new QueryClient({
   },
 });
 
-const isWeb = Platform.OS === 'web';
+// const isWeb = Platform.OS === 'web';
 
 queryClient.getQueryCache().subscribe((event) => {
   if (event?.query?.state?.status === 'error') {
     const error = event.query.state.error as any;
 
     if (error?.response?.status === 401 || error?.response?.status === 403) {
-      if (isWeb) {
+      // if (isWeb) {
+      setTimeout(() => {
         if (currentPathname !== '/login') {
           storage.deleteItem('user');
           storage.deleteItem('token');
           router.replace('/login');
         }
-      }
+      }, 100);
+      // }
     }
   }
 });
@@ -78,6 +81,7 @@ export default function RootLayout() {
             <StatusBar style="inverted" />
           </SafeAreaView>
         </AuthMiddleware>
+        <Toast position="top" />
       </PaperProvider>
       {/* </GluestackUIProvider> */}
     </QueryClientProvider>

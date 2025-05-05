@@ -36,7 +36,7 @@ const VisitDocuments = ({ propertyVisit }: VisitDocumentFormProps) => {
       if (Platform.OS === 'web' && files) {
         formData.append(
           'valuations_property_visit_document[document]',
-          fileInfo.file
+          fileInfo.file!
         );
         formData.append(
           `valuations_property_visit_document[title]`,
@@ -89,7 +89,7 @@ const VisitDocuments = ({ propertyVisit }: VisitDocumentFormProps) => {
   useEffect(() => {
     if (propertyVisitDocuments?.length >= 0) {
       setDocuments(
-        propertyVisitDocuments?.map((document) => {
+        propertyVisitDocuments?.map((document: PropertyVisitDocumentType) => {
           return { ...document, rotation: 0 };
         })
       );

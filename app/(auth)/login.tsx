@@ -2,7 +2,7 @@ import apiClient from '@/helpers/api-client';
 import { useMutation } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ImageBackground,
   Platform,
@@ -11,6 +11,7 @@ import {
   View,
 } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 import { z } from 'zod';
 
 const storeItem = async (key: string, value: string) => {
@@ -47,7 +48,6 @@ export default function Login() {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
     {}
   );
-
   const mutation = useMutation({
     mutationFn: loginUser,
     onSuccess: async (res) => {
@@ -63,6 +63,10 @@ export default function Login() {
     },
     onError: (error) => {
       console.error('Login error', error);
+      Toast.show({
+        type: 'error',
+        text1: error.message,
+      });
     },
   });
 
@@ -81,6 +85,12 @@ export default function Login() {
       }
     }
   };
+  useEffect(() => {
+    Toast.show({
+      type: 'success',
+      text1: 'Welcome',
+    });
+  }, []);
 
   return (
     <ImageBackground
