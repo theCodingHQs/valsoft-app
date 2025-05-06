@@ -2,7 +2,7 @@ import apiClient from '@/helpers/api-client';
 import { useMutation } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   ImageBackground,
   Platform,
@@ -59,7 +59,10 @@ export default function Login() {
         'isAutoReference',
         JSON.stringify(data.is_auto_reference)
       );
-      router.replace('/');
+     
+      setTimeout(()=>{
+        router.replace('/');
+      },100)
     },
     onError: (error) => {
       console.error('Login error', error);
@@ -85,12 +88,7 @@ export default function Login() {
       }
     }
   };
-  useEffect(() => {
-    Toast.show({
-      type: 'success',
-      text1: 'Welcome',
-    });
-  }, []);
+  
 
   return (
     <ImageBackground

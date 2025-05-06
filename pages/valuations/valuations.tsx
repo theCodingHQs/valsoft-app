@@ -37,7 +37,7 @@ const Valuations = ({ isAllValuations }: { isAllValuations?: boolean }) => {
   );
 };
 
-export const valuationStyles = StyleSheet.create({
+const valuationStyles = StyleSheet.create({
   container: {
     padding: 10,
     alignItems: 'center',

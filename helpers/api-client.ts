@@ -12,23 +12,20 @@ const apiClient = axios.create({
 
 // Add a request interceptor to attach token
 apiClient.interceptors.request.use(async (config) => {
-  const token = await storage.getItem('token');
+  const token = await storage.getItem?.('token');
   if (token) {
     config.headers.Authorization = token;
   }
   return config;
 });
 
-
-
 export async function upload(url, data) {
   try {
-   
     const token = await storage.getItem('token');
 
     const config = {
       headers: {
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
         Authorization: token ? token : '',
       },
     };
@@ -48,11 +45,13 @@ export async function upload(url, data) {
     }
   } catch (err) {
     // Return error response or fallback if error.response is undefined
-    return Promise.resolve(err.response || { status: 500, data: { message: 'Network or server error' } });
+    return Promise.resolve(
+      err.response || {
+        status: 500,
+        data: { message: 'Network or server error' },
+      }
+    );
   }
 }
-
-
-
 
 export default apiClient;

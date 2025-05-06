@@ -30,21 +30,24 @@ const queryClient = new QueryClient({
 });
 
 // const isWeb = Platform.OS === 'web';
-
 queryClient.getQueryCache().subscribe((event) => {
+
   if (event?.query?.state?.status === 'error') {
     const error = event.query.state.error as any;
 
     if (error?.response?.status === 401 || error?.response?.status === 403) {
-      // if (isWeb) {
-      setTimeout(() => {
-        if (currentPathname !== '/login') {
-          storage.deleteItem('user');
-          storage.deleteItem('token');
-          router.replace('/login');
+
+      (async () => {
+        try {
+          if (currentPathname !== '/login') {
+            await storage.deleteItem('user');
+            await storage.deleteItem('token');
+            await router.replace('/login');
+          }
+        } catch (err) {
+          console.error('Error during logout process:', err);
         }
-      }, 100);
-      // }
+      })();
     }
   }
 });
@@ -73,17 +76,15 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <GluestackUIProvider mode="system"> */}
       <PaperProvider>
-        <AuthMiddleware>
-          <SafeAreaView style={styles.container}>
-            <Stack screenOptions={{ headerShown: false }} />
-            <StatusBar style="inverted" />
-          </SafeAreaView>
-        </AuthMiddleware>
-        <Toast position="top" />
+        <SafeAreaView style={styles.container}>
+          <Stack screenOptions={{ headerShown: false }}>
+            <AuthMiddleware />
+          </Stack>
+          <StatusBar style="light" animated backgroundColor='#222' />
+        </SafeAreaView>
+        <Toast position="top" swipeable />
       </PaperProvider>
-      {/* </GluestackUIProvider> */}
     </QueryClientProvider>
   );
 }

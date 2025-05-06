@@ -1,29 +1,23 @@
 import { isUserLoggedIn } from '@/helpers/auth';
-import { router, useRootNavigationState, useSegments } from 'expo-router';
+import { router, Slot, useSegments } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
-export default function AuthMiddleware({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AuthMiddleware() {
   const [isChecking, setIsChecking] = useState(true);
   const segments = useSegments();
-  const navigationState = useRootNavigationState();
 
   useEffect(() => {
-    if (!navigationState?.key) return;
-    console.log(navigationState);
+    if (!segments || segments.length) return;
+
     const checkAuth = async () => {
       try {
         const loggedIn = await isUserLoggedIn();
-
         const inAppGroup = segments[0] === '(app)';
 
         if (!loggedIn && inAppGroup) {
           router.replace('/login');
-        } else if (loggedIn && !inAppGroup && segments[0] !== undefined) {
+        } else if (loggedIn && !inAppGroup) {
           router.replace('/');
         }
 
@@ -35,9 +29,9 @@ export default function AuthMiddleware({
     };
 
     checkAuth();
-  }, [segments, navigationState?.key]);
+  }, [segments]);
 
-  if (isChecking && navigationState?.key) {
+  if (isChecking) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" />
@@ -45,5 +39,5 @@ export default function AuthMiddleware({
     );
   }
 
-  return <>{children}</>;
+  return <Slot />;
 }
