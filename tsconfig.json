@@ -3,12 +3,11 @@
     "strict": true,
     "jsx": "react-jsx",
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     }
   },
   "include": [
+    "./images.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",

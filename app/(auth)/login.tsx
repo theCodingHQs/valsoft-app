@@ -1,9 +1,11 @@
+import uri from '@/assets/images/icon.png';
 import apiClient from '@/helpers/api-client';
 import { useMutation } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { useState } from 'react';
 import {
+  Image,
   ImageBackground,
   Platform,
   StyleSheet,
@@ -14,8 +16,9 @@ import { Button, TextInput } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { z } from 'zod';
 
+const isWeb = Platform.OS === 'web';
 const storeItem = async (key: string, value: string) => {
-  if (Platform.OS === 'web') {
+  if (isWeb) {
     localStorage.setItem(key, value);
   } else {
     await SecureStore.setItemAsync(key, value);
@@ -34,7 +37,7 @@ async function loginUser({
   email: string;
   password: string;
 }) {
-  const response = await apiClient.post('sign_in', {
+  const response = await apiClient.post('login', {
     org_user: { email, password },
   });
 
@@ -52,23 +55,22 @@ export default function Login() {
     mutationFn: loginUser,
     onSuccess: async (res) => {
       const data = res.data;
-
       await storeItem('token', res.headers['authorization']);
       await storeItem('user', JSON.stringify(data));
       await storeItem(
         'isAutoReference',
         JSON.stringify(data.is_auto_reference)
       );
-     
-      setTimeout(()=>{
+
+      setTimeout(() => {
         router.replace('/');
-      },100)
+      }, 100);
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error('Login error', error);
       Toast.show({
         type: 'error',
-        text1: error.message,
+        text1: error?.response?.data?.error || error.message,
       });
     },
   });
@@ -88,7 +90,6 @@ export default function Login() {
       }
     }
   };
-  
 
   return (
     <ImageBackground
@@ -102,7 +103,16 @@ export default function Login() {
       resizeMode="cover" // or "contain", "stretch", "repeat"
     >
       <View style={styles.container}>
-        <Text style={styles.title}>Welcome Back</Text>
+        <View
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%',
+            // transform: `translateY(${isWeb ? '50%' : '100%'})`,
+          }}
+        >
+          <Image source={uri} style={{}} />
+        </View>
         <View style={styles.form}>
           <View>
             <TextInput
