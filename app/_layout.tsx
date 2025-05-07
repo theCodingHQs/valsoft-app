@@ -1,4 +1,3 @@
-import AuthMiddleware from '@/components/auth-middleware';
 import storage from '@/helpers/auth';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { currentPathname, setCurrentPathname } from '@/utils/navigation-state';
@@ -78,9 +77,7 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <PaperProvider>
         <SafeAreaView style={styles.container}>
-          <Stack screenOptions={{ headerShown: false }}>
-            <AuthMiddleware />
-          </Stack>
+          <Stack screenOptions={{ headerShown: false }} />
           <StatusBar style="light" animated backgroundColor='#222' />
         </SafeAreaView>
         <Toast position="top" swipeable />

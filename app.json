@@ -24,6 +24,19 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.valsoft.valsoftapp"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "9ce4ed5e-7a34-4c21-a444-398d32913bc4"
+      }
     }
   }
 }
