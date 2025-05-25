@@ -16,19 +16,17 @@ async function getValuationById(id: string | number) {
   return response.data;
 }
 
-
-
-export const useValuations = (isAllValuations: boolean): UseQueryResult => {
+export const useValuations = (): UseQueryResult => {
   return useQuery({
-    queryKey: ['valuations', isAllValuations],
-    queryFn: isAllValuations ? getAllValuations : getValuations,
+    queryKey: ['valuations'],
+    queryFn: getValuations,
   });
 };
 
 export const useValuationById = (id: string | number): UseQueryResult => {
   return useQuery({
     queryKey: [`valuations/${id}`],
-    queryFn: ()=> getValuationById(id),
+    queryFn: () => getValuationById(id),
     enabled: !!id,
   });
 };

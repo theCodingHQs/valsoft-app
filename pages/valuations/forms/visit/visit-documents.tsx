@@ -2,6 +2,7 @@ import FileItem from '@/components/ui/input/file-item';
 import FileSelector from '@/components/ui/input/file-selector';
 import { upload } from '@/helpers/api-client';
 import { FileInfo } from '@/types/file-types';
+import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { Image, Platform, StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
@@ -14,6 +15,7 @@ interface VisitDocumentFormProps {
 }
 
 const VisitDocuments = ({ propertyVisit }: VisitDocumentFormProps) => {
+  const queryClient = useQueryClient();
   const [documents, setDocuments] = useState<PropertyVisitDocumentType[]>([]);
   const { data: propertyVisitDocuments } = useGetDocumentsByPropertyVisitId(
     propertyVisit?.id!
@@ -72,6 +74,9 @@ const VisitDocuments = ({ propertyVisit }: VisitDocumentFormProps) => {
 
       uploadResult.then((result) => {
         if (result.data?.id) {
+          queryClient.invalidateQueries({
+            queryKey: ['property_visit_documents'],
+          });
           console.log(`${fileInfo.name} - Upload Successfully !`);
         } else {
           result.data.document.forEach((message: string) => {

@@ -14,7 +14,6 @@ import { useValuationById } from './api-queries/valuation';
 import { ValuationIndex } from './models';
 import { ValuationActions } from './valuation-actions';
 
-
 const ValuationCard = ({
   valuation: valuationInfo,
 }: {
@@ -34,7 +33,7 @@ const ValuationCard = ({
             style={{
               ...valuationStyles.headerText,
               fontWeight: 'bold',
-              fontSize: 18,
+              fontSize: 14,
             }}
           >
             {valuation?.applicant_name}
@@ -182,7 +181,7 @@ const Detail = ({
                 valuationStyles.detailValue,
                 detailValueStyle,
                 {
-                  color: colors.onPrimary,
+                  color: colors.primary,
                   borderRadius: roundness,
                   textAlign: 'center',
                 },
@@ -205,8 +204,6 @@ const Detail = ({
 
 export default ValuationCard;
 
-
-
 const valuationStyles = StyleSheet.create({
   container: {
     padding: 10,
@@ -218,7 +215,7 @@ const valuationStyles = StyleSheet.create({
   },
   card: {
     minWidth: 300,
-    flex: 1,
+    flexShrink: 1,
     backgroundColor: '#fff',
     borderRadius: 5,
     borderWidth: 1,
@@ -256,10 +253,15 @@ const valuationStyles = StyleSheet.create({
     borderTopWidth: 0,
     borderBottomWidth: 0,
     padding: 10,
+    paddingTop: 4,
+    paddingBottom: 0,
+    flex: 1,
   },
   section: {
     marginBottom: 5,
-    paddingBottom: 8,
+    paddingBottom: 2,
+    borderBottomColor: '#aaaa',
+    borderBottomWidth: 1,
   },
   sectionTitle: {
     fontWeight: 'bold',
@@ -277,8 +279,8 @@ const valuationStyles = StyleSheet.create({
     minWidth: 130,
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 2,
-    margin: 2,
+    // padding: 2,
+    // margin: 2,
     marginLeft: 0,
     marginRight: 5,
     borderRadius: 4,

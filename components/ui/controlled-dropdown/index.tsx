@@ -1,8 +1,8 @@
 import { Modal } from '@/components/modal';
 import { CheckIcon, ChevronDownIcon } from 'lucide-react-native';
 import { useState } from 'react';
-import { Pressable, View } from 'react-native';
-import { Text, TextInput, useTheme } from 'react-native-paper';
+import { Platform, Pressable, View } from 'react-native';
+import { Text, useTheme } from 'react-native-paper';
 
 interface DropDownMenuProps {
   list: any[];
@@ -22,22 +22,26 @@ const DropDownMenu = ({
   onChange,
 }: DropDownMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const selectedItem = list.find((item) => item[valueField] == value);
-  const { colors, roundness } = useTheme();
+  const { colors, roundness, fonts } = useTheme();
+
+  const isWeb = Platform.OS == 'web';
+  const toggleModal = (is: boolean) => {
+    setIsOpen(is);
+  };
 
   const getIsSelected = (item: any) =>
     selectedItem?.[valueField] === item[valueField];
 
   const onSelectItem = (item: any) => {
     onChange?.(item[valueField]);
-    setIsOpen(false);
+    toggleModal(false);
   };
 
   return (
     <Modal
       isOpen={isOpen}
-      setIsOpen={setIsOpen}
+      setIsOpen={toggleModal}
       modalStyle={{
         width: 300,
         height: Math.min(list.length * 40 + 50, 400),
@@ -48,28 +52,37 @@ const DropDownMenu = ({
         <View
           style={{
             display: 'flex',
-            flexDirection: 'row',
+            position: 'relative',
+            flexDirection: selectedItem ? 'column' : 'row',
             justifyContent: 'space-between',
-            alignItems: 'center',
+            alignItems: selectedItem ? 'flex-start' : 'center',
             minWidth: 227,
             height: 35,
-            ...(!selectedItem
-              ? {
-                  borderWidth: 1,
-                  borderColor: colors.outline,
-                  borderRadius: roundness,
-                  padding: 8,
-                }
-              : {}),
+            borderWidth: 1,
+            borderColor: colors.outline,
+            borderRadius: roundness,
+            padding: 8,
           }}
         >
           {selectedItem ? (
-            <TextInput
-              value={selectedItem[labelField]}
-              label={label}
-              style={{ height: 35 }}
-              mode="outlined"
-            />
+            <>
+              <Text
+                style={{
+                  color: colors.onBackground,
+                  backgroundColor: colors.background,
+                  position: 'absolute',
+                  transform: isWeb
+                    ? 'translateY(-110%)'
+                    : [{ translateY: -10 }, { translateX: 10 }],
+                  fontSize: fonts.labelMedium.fontSize,
+                }}
+              >
+                {label}
+              </Text>
+              <Text style={{ color: colors.onBackground }}>
+                {selectedItem[labelField]}
+              </Text>
+            </>
           ) : (
             <>
               <Text style={{ color: colors.onBackground }}>{label}</Text>

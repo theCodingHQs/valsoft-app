@@ -1,3 +1,5 @@
+import { Alert, Linking, PermissionsAndroid, Platform } from 'react-native';
+
 export const accordionColorTrigger = (
   status: string
 ): { backgroundColor: string; color: string } => {
@@ -48,21 +50,46 @@ export const accordionColorTrigger = (
   );
 };
 
-
-
-
-import { Alert, Linking } from 'react-native';
-
 export const usePhoneDialer = () => {
   const dial = async (phoneNumber: string) => {
     const url = `tel:${phoneNumber}`;
-    const supported = await Linking.canOpenURL(url);
 
-    if (supported) {
-      await Linking.openURL(url);
-    } else {
-      Alert.alert("Phone call not supported on this device");
+    const supported = await Linking.canOpenURL(url);
+    if (!supported) {
+      Alert.alert('Phone call not supported on this device');
+      return;
     }
+
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CALL_PHONE,
+          {
+            title: 'Phone Call Permission',
+            message: 'This app needs permission to make phone calls.',
+            buttonPositive: 'OK',
+            buttonNegative: 'Cancel',
+          }
+        );
+
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          Alert.alert(
+            'Permission denied',
+            'Cannot make a phone call without permission.'
+          );
+          return;
+        }
+      } catch (err) {
+        console.warn('Permission error:', err);
+        Alert.alert(
+          'Permission error',
+          'Failed to request phone call permission.'
+        );
+        return;
+      }
+    }
+
+    await Linking.openURL(url);
   };
 
   return { dial };

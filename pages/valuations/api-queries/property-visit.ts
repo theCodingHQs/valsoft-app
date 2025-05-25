@@ -57,9 +57,17 @@ export const usePropertyVisitOptions = (): UseQueryResult => {
 };
 
 export const useAddPropertyVisit = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: addPropertyVisit,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: [`valuations/${data.valuation_id}`],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [`property_visits/${data.id}`],
+      });
       Toast.show({
         type: 'success',
         text1: 'Success',

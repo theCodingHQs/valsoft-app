@@ -1,14 +1,16 @@
 import storage from '@/helpers/auth';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { currentPathname, setCurrentPathname } from '@/utils/navigation-state';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { router, Stack, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
-import { PaperProvider } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { DefaultTheme, PaperProvider } from 'react-native-paper';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
 const queryClient = new QueryClient({
@@ -30,12 +32,10 @@ const queryClient = new QueryClient({
 
 // const isWeb = Platform.OS === 'web';
 queryClient.getQueryCache().subscribe((event) => {
-
   if (event?.query?.state?.status === 'error') {
     const error = event.query.state.error as any;
 
     if (error?.response?.status === 401 || error?.response?.status === 403) {
-
       (async () => {
         try {
           if (currentPathname !== '/login') {
@@ -57,6 +57,13 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
+  const navigation = useNavigation();
+  const route = useRoute();
+
+  const title = navigation
+    ?.getState()
+    ?.routes.find((r) => r.key === route.key)?.name;
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
@@ -75,13 +82,18 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <PaperProvider>
-        <SafeAreaView style={styles.container}>
-          <Stack screenOptions={{ headerShown: false }} />
-          <StatusBar style="light" animated backgroundColor='#222' />
-        </SafeAreaView>
-        <Toast position="top" swipeable />
-      </PaperProvider>
+      <SafeAreaProvider>
+        <PaperProvider theme={DefaultTheme}>
+          <SafeAreaView
+            style={styles.container}
+            edges={['top', 'left', 'right']}
+          >
+            <Stack screenOptions={{ headerShown: false }} />
+            <StatusBar style="dark" />
+          </SafeAreaView>
+          <Toast position="top" swipeable />
+        </PaperProvider>
+      </SafeAreaProvider>
     </QueryClientProvider>
   );
 }

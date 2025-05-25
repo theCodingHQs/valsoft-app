@@ -6,7 +6,17 @@
   "scripts": {
     "dev": "npx expo start",
     "build:web": "npx expo export --platform web",
-    "lint": "npx expo lint"
+    "lint": "npx expo lint",
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
+  },
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "listUnknownPackages": false
+      }
+    }
   },
   "dependencies": {
     "@eva-design/eva": "^2.2.0",
@@ -21,15 +31,15 @@
     "@lucide/lab": "^0.1.2",
     "@react-native-community/cli": "^18.0.0",
     "@react-navigation/bottom-tabs": "^7.0.0",
-    "@react-navigation/native": "^7.0.0",
+    "@react-navigation/native": "^7.1.9",
     "@tanstack/react-query": "^5.74.3",
-    "@ui-kitten/components": "^5.3.1",
     "axios": "^1.8.4",
     "date-fns": "^4.1.0",
     "expo": "^53.0.8",
     "expo-blur": "~14.1.4",
     "expo-camera": "~16.1.6",
     "expo-constants": "~17.1.6",
+    "expo-dev-client": "~5.1.8",
     "expo-document-picker": "~13.1.5",
     "expo-font": "~13.3.1",
     "expo-haptics": "~14.1.4",
@@ -62,7 +72,7 @@
     "react-native-url-polyfill": "^2.0.0",
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "^0.20.0",
-    "react-native-webview": "13.13.5",
+    "react-native-webview": "^13.13.5",
     "tailwindcss-react-native": "^1.7.10",
     "wrap-ansi": "7",
     "zod": "^3.24.3",
@@ -71,7 +81,6 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@types/react": "~19.0.10",
-    "@types/react-native": "^0.73.0",
     "typescript": "^5.3.0"
   }
 }

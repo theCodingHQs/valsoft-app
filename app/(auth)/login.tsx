@@ -38,7 +38,7 @@ async function loginUser({
   password: string;
 }) {
   const response = await apiClient.post('login', {
-    org_user: { email, password },
+    site_engineer: { email, password },
   });
 
   return response;

@@ -1,5 +1,10 @@
 import apiClient from '@/helpers/api-client';
-import { useMutation, useQuery, UseQueryResult } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
 
 async function getPropertyById(id: string | number) {
@@ -27,9 +32,16 @@ export const usePropertyById = (id: string | number): UseQueryResult => {
 };
 
 export const useUpdatePropertyVisitDelay = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: updatePropertyVisitDelay,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: [`valuations/${data.valuation_id}`],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [`valuations`],
+      });
       Toast.show({
         type: 'success',
         text1: 'Success',

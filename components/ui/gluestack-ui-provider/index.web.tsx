@@ -1,9 +1,9 @@
 'use client';
-import React, { useEffect, useLayoutEffect } from 'react';
-import { config } from './config';
+import { setFlushStyles } from '@gluestack-ui/nativewind-utils/flush';
 import { OverlayProvider } from '@gluestack-ui/overlay';
 import { ToastProvider } from '@gluestack-ui/toast';
-import { setFlushStyles } from '@gluestack-ui/nativewind-utils/flush';
+import React, { useEffect, useLayoutEffect } from 'react';
+import { config } from './config';
 import { script } from './script';
 
 export type ModeType = 'light' | 'dark' | 'system';
@@ -85,7 +85,7 @@ export function GluestackUIProvider({
       <script
         suppressHydrationWarning
         dangerouslySetInnerHTML={{
-          __html: `(${script.toString()})('${mode}')`,
+          __html: `(${script?.toString()})('${mode}')`,
         }}
       />
       <OverlayProvider>

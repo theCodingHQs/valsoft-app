@@ -1,10 +1,13 @@
 import { StyleSheet, View } from 'react-native';
-import { Button, Text, TextInput } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 
-import DatePicker from '@/components/ui/date-picker';
+import {
+  ControlledDatePicker,
+  ControlledTextInput,
+} from '@/components/ui/react-hook-form-controlled-fields';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useUpdatePropertyVisitDelay } from '../api-queries/property';
 import { Property } from '../models';
@@ -16,7 +19,7 @@ const FormSchema = z.object({
     (val) => {
       if (val instanceof Date && !isNaN(val.getTime())) {
         // Convert Date to required format
-        return format(val, "yyyy-MM-dd'T'HH:mm");
+        return format(val, 'yyyy-MM-dd');
       }
       return val; // assume it's already a string
     },
@@ -44,16 +47,16 @@ type FormData = z.infer<typeof FormSchema>;
 export default function VisitDelayForm({
   property,
 }: Readonly<{ property: Property }>) {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
+  const validation = useForm<FormData>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      ...property,
+      id: property.id,
+      visit_rescheduled_date: new Date(
+        property.visit_rescheduled_date || new Date()
+      ),
     },
   });
+  console.log(property);
   const { mutate: onSubmitPropertyDelay } = useUpdatePropertyVisitDelay();
 
   const onSubmit = (data: FormData) => {
@@ -63,55 +66,22 @@ export default function VisitDelayForm({
   return (
     <View style={styles.container}>
       <View style={styles.form}>
-        <View>
-          <Controller
-            control={control}
-            name="visit_rescheduled_date"
-            render={({ field: { onChange, value } }) => (
-              <View style={{ marginBottom: 10, marginTop: 10 }}>
-                <Text style={{ marginBottom: 6, marginTop: 6 }}>
-                  Reschedule Date
-                </Text>
-                <DatePicker
-                  date={new Date()}
-                  onChangeOrConfirm={(params) => onChange(params.date!)}
-                />
-                {errors.visit_rescheduled_date && (
-                  <Text style={styles.error}>
-                    {errors.visit_rescheduled_date.message}
-                  </Text>
-                )}
-              </View>
-            )}
-          />
-          <Controller
-            control={control}
-            name="visit_delay_reason"
-            render={({ field: { onChange, value } }) => (
-              <View style={{ marginBottom: 10, marginTop: 10 }}>
-                <TextInput
-                  label="Reason For Delay"
-                  value={value}
-                  onChangeText={onChange}
-                  mode="outlined"
-                  multiline
-                  numberOfLines={2}
-                  style={{ height: 100 }}
-                />
-                {errors.visit_delay_reason && (
-                  <Text style={styles.error}>
-                    {errors.visit_delay_reason.message}
-                  </Text>
-                )}
-              </View>
-            )}
-          />
-        </View>
+        <ControlledDatePicker
+          label="Reschedule Date"
+          name="visit_rescheduled_date"
+          validation={validation}
+        />
+        <ControlledTextInput
+          label="Reason For Delay"
+          name="visit_delay_reason"
+          validation={validation}
+          multiline
+        />
       </View>
 
       <Button
         mode="contained"
-        onPress={handleSubmit(onSubmit)}
+        onPress={validation.handleSubmit(onSubmit)}
         style={styles.submitButton}
       >
         Submit

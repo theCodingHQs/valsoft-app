@@ -6,7 +6,7 @@ import {
   UseFormStateReturn,
 } from 'react-hook-form';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { TextInput, useTheme } from 'react-native-paper';
 import DropDownMenu from '../controlled-dropdown';
 import DatePicker from '../date-picker';
 
@@ -92,13 +92,32 @@ export const ControlledDatePicker = ({
   label: string;
   multiline?: boolean;
 }) => {
+  const { colors, roundness, fonts } = useTheme();
+  const isWeb = Platform.OS == 'web';
+
   return (
     <ControllerView name={name} validation={validation} multiline={multiline}>
+
       {({ field: { onChange, value } }) => (
-        <DatePicker
-          date={new Date(value)}
-          onChangeOrConfirm={(params) => onChange(params.date!)}
-        />
+        <>
+          <Text
+            style={{
+              color: colors.onBackground,
+              backgroundColor: colors.background,
+              position: 'absolute',
+              transform: isWeb
+                ? 'translateY(-110%)'
+                : [{ translateY: -10 }, { translateX: 10 }],
+              fontSize: fonts.labelMedium.fontSize,
+            }}
+          >
+            {label}
+          </Text>
+          <DatePicker
+            date={new Date(value)}
+            onChangeOrConfirm={(params) => onChange(params.date!)}
+          />
+        </>
       )}
     </ControllerView>
   );

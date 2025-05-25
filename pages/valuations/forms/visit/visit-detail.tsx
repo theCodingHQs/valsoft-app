@@ -121,12 +121,12 @@ const VisitDetail = ({
           name="construction_year"
           validation={validation}
         />
-        <ControlledTextInput
+        <ControlledDatePicker
           label="Project Start Date"
           name="project_start_date"
           validation={validation}
         />
-        <ControlledTextInput
+        <ControlledDatePicker
           label="Project End Date"
           name="project_end_date"
           validation={validation}
@@ -463,7 +463,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     gap: 16,
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
   submitButton: {
     marginTop: 20,

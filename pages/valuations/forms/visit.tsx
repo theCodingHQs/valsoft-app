@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { useOrgUsers } from '@/pages/users/api-queries/user';
 import { useEffect, useMemo, useState } from 'react';
@@ -36,7 +36,9 @@ export default function VisitForm({
     data: propertyVisit,
     isLoading,
     refetch: propertyVisitRefetch,
-  } = usePropertyVisitById(propertyVisitId ?? addedPropertyVisit?.id!);
+  } = usePropertyVisitById(
+    propertyVisitId ? propertyVisitId : addedPropertyVisit?.id!
+  );
 
   const formData = useMemo(
     () => propertyVisit ?? addedPropertyVisit,
@@ -69,35 +71,41 @@ export default function VisitForm({
             >
               <Text style={{ fontSize: 13 }}>Occupancy</Text>
             </Button>
-            <Button
-              mode={activeTab === 'visit-documents' ? 'contained' : 'elevated'}
-              onPress={() => setActiveTab('visit-documents')}
-              style={{ padding: 0 }}
-            >
-              <Text style={{ fontSize: 13 }}>Documents</Text>
-            </Button>
+            {formData?.occupancy_status && (
+              <Button
+                mode={
+                  activeTab === 'visit-documents' ? 'contained' : 'elevated'
+                }
+                onPress={() => setActiveTab('visit-documents')}
+                style={{ padding: 0 }}
+              >
+                <Text style={{ fontSize: 13 }}>Documents</Text>
+              </Button>
+            )}
           </>
         )}
       </View>
-      {activeTab === 'visit-details' && (
-        <VisitDetail
-          addPropertyVisit={addPropertyVisit}
-          property={property as Property}
-          propertyVisit={formData}
-          orgUsers={orgUsers}
-          propertyVisitOptions={propertyVisitOptions as PropertyVisitOptions}
-        />
-      )}
+      <ScrollView style={{ flex: 1 }}>
+        {activeTab === 'visit-details' && (
+          <VisitDetail
+            addPropertyVisit={addPropertyVisit}
+            property={property as Property}
+            propertyVisit={formData}
+            orgUsers={orgUsers}
+            propertyVisitOptions={propertyVisitOptions as PropertyVisitOptions}
+          />
+        )}
 
-      {activeTab === 'visit-occupancy' && (
-        <VisitOccupancy
-          propertyVisit={formData}
-          propertyVisitOptions={propertyVisitOptions as PropertyVisitOptions}
-        />
-      )}
-      {activeTab === 'visit-documents' && (
-        <VisitDocuments propertyVisit={formData} />
-      )}
+        {activeTab === 'visit-occupancy' && (
+          <VisitOccupancy
+            propertyVisit={formData}
+            propertyVisitOptions={propertyVisitOptions as PropertyVisitOptions}
+          />
+        )}
+        {activeTab === 'visit-documents' && (
+          <VisitDocuments propertyVisit={formData} />
+        )}
+      </ScrollView>
     </View>
   );
 }

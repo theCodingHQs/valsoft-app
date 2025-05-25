@@ -1,46 +1,49 @@
-import { useSearchStore } from '@/store/search';
-import {
-  ActivityIndicator,
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  View
-} from 'react-native';
+import Header from '@/components/layout/header';
+import SearchButtonInput from '@/components/search-button-input';
+import { useState } from 'react';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import { useValuations } from './api-queries/valuation';
 import ValuationCard from './valuation-card';
+import QueriesInvalidatorButton from '@/components/ui/queries-invalidator-button';
 
-const { width } = Dimensions.get('window');
-
-const Valuations = ({ isAllValuations }: { isAllValuations?: boolean }) => {
-  const query = useSearchStore((state) => state.query);
-  const { data, isLoading, error } = useValuations(!!isAllValuations);
-
+const Valuations = () => {
+  const { data, isLoading } = useValuations();
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  
   const filteredData = (data as any[])?.filter((item: any) => {
     //["applicant_name", "address", "title", "reference_number", "institution_name", "status_desc", "visitor_name"]
-    return item.applicant_name.toLowerCase().includes(query.toLowerCase());
+    return item.applicant_name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
   });
 
-  if(isLoading){
-    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <ActivityIndicator size="large" />
-          </View>
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
+
   return (
-    <ScrollView contentContainerStyle={valuationStyles.container}>
-      {filteredData?.map((item: any, index: number) => {
-        
-        return (
-          <ValuationCard key={index} valuation={item} />
-        );
-      })}
-    </ScrollView>
+    <>
+      <QueriesInvalidatorButton />
+      <Header>
+        <SearchButtonInput value={searchQuery} onChangeText={setSearchQuery} />
+      </Header>
+      <ScrollView contentContainerStyle={valuationStyles.container}>
+        {filteredData?.map((item: any, index: number) => {
+          return <ValuationCard key={index} valuation={item} />;
+        })}
+      </ScrollView>
+    </>
   );
 };
 
 const valuationStyles = StyleSheet.create({
   container: {
     padding: 10,
-    alignItems: 'center',
+    alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "valsoft",
-    "slug": "valsoft",
+    "name": "valsoft-2",
+    "slug": "valsoft-2",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -28,14 +28,14 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
-        "backgroundColor": "transparent"
+        "backgroundColor": "#ffffaa"
       },
       "package": "com.valsoft.valsoftapp"
     },
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "9ce4ed5e-7a34-4c21-a444-398d32913bc4"
+        "projectId": "9f7ec43a-0874-41ea-b956-81a2df64f01a"
       }
     }
   }
